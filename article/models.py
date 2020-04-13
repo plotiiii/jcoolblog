@@ -6,6 +6,17 @@ from django.utils import timezone
 from django.urls import reverse
 
 # Create your models here.
+class ArticleColumn(models.Model):
+    """
+    栏目的 Model
+    """
+    # 栏目标题
+    title = models.CharField(max_length=100, blank=True)
+    # 创建时间
+    created = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.title
 
 class ArticlePost(models.Model):
     # on_delete=models.CASCADE 表明了删除该用户所以数据都删除
@@ -19,6 +30,13 @@ class ArticlePost(models.Model):
     updated = models.DateTimeField(auto_now=True)
     total_views = models.PositiveIntegerField(default=0)
 
+    column = models.ForeignKey(
+        ArticleColumn,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name='article'
+    )
     class Meta():
         ordering = ['-created']
 

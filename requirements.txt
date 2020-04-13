@@ -1,5 +1,5 @@
 asgiref==3.2.7
-Django==2.2.12
+Django==3.0.5
 django-password-reset==2.0
 Markdown==3.2.1
 Pillow==7.1.1

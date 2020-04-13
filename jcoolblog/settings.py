@@ -23,7 +23,7 @@ SECRET_KEY = '20dy!p^9fh&d#k5=pth7^2v-$((-k-ob##n5oz^1b#a9rb(_g#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # 关闭调试模式
-DEBUG = False
+DEBUG = True
 
 # 允许的服务器
 ALLOWED_HOSTS = ['*']
@@ -105,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-Hans'
 
 TIME_ZONE = 'Asia/Shanghai'
 
@@ -119,7 +119,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
+# 静态文件收集目录
+STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
@@ -139,5 +140,3 @@ DEFAULT_FROM_EMAIL = 'jcl的博客 <your_email_account@xxx.com>'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-# 静态文件收集目录
-STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')

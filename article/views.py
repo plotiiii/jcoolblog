@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from comment.models import Comment
 from .forms import ArticlePostForm
 from .models import ArticlePost
-
+from .models import ArticleColumn
 
 def article_list(request):
     search = request.GET.get('search')
@@ -84,6 +84,9 @@ def article_create(request):
             # 如果你进行过删除数据表的操作，可能会找不到id=1的用户
             # 此时请重新创建用户，并传入此用户的id
             new_article.author = User.objects.get(id=request.user.id)
+            if request.POST['column'] != 'none':
+                new_article.column = ArticleColumn.objects.get(id=request.POST['column'])
+
             # 将新文章保存到数据库中
             new_article.save()
             # 完成后返回到文章列表
@@ -96,7 +99,8 @@ def article_create(request):
         # 创建表单类实例
         article_post_form = ArticlePostForm()
         # 赋值上下文
-        context = {'article_post_form': article_post_form}
+        columns = ArticleColumn.objects.all()
+        context = {'article_post_form': article_post_form, 'columns': columns}
         # 返回模板
         return render(request, 'article/create.html', context)
 
@@ -137,6 +141,10 @@ def article_update(request, id):
             # 保存新写入的 title、body 数据并保存
             article.title = request.POST['title']
             article.body = request.POST['body']
+            if request.POST['column'] != 'none':
+                article.column = ArticleColumn.objects.get(id=request.POST['column'])
+            else:
+                article.column = None
             article.save()
             # 完成后返回到修改后的文章中。需传入文章的 id 值
             return redirect("article:article_detail", id=id)
@@ -149,6 +157,12 @@ def article_update(request, id):
         # 创建表单类实例
         article_post_form = ArticlePostForm()
         # 赋值上下文，将 article 文章对象也传递进去，以便提取旧的内容
-        context = {'article': article, 'article_post_form': article_post_form}
+        columns = ArticleColumn.objects.all()
+        context = {
+            'article': article,
+            'article_post_form': article_post_form,
+            'columns': columns,
+        }
+
         # 将响应返回到模板中
         return render(request, 'article/update.html', context)
